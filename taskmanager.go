@@ -65,6 +65,7 @@ func UpdateTaskName(id int, name string) (Task, error) {
 
 		if tasks[i].ID == id {
 			tasks[i].Name = name
+			tasks[i].UpdatedAt = time.Now()
 			updatedTask = tasks[i]
 		}
 	}
@@ -93,7 +94,10 @@ func MarkTaskInProgress(id int) error {
 }
 
 func MarkTaskDone(id int) error {
-	tasks := check(readtasks())
+	tasks, err := readtasks()
+	if err != nil {
+		return err
+	}
 	for i := 0; i < len(tasks); i++ {
 
 		if tasks[i].ID == id {
